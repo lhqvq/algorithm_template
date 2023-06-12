@@ -130,4 +130,60 @@ int main() {
 }
 */
 
+
+/* 表达式求值 -----------------------------------------------
+#include <iostream>
+#include <stack>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+stack<int> nums; // 操作数栈
+stack<char> ops; // 操作符栈
+
+unordered_map<char, int> pr{{'+', 1}, {'-', 1}, {'*', 2}, {'/', 2}};
+
+void eval() {
+    auto b = nums.top(); nums.pop();
+    auto a = nums.top(); nums.pop();
+    auto c = ops.top(); ops.pop();
+    int x;
+    if (c == '+') x = a + b;
+    else if (c == '-') x = a - b;
+    else if (c == '*') x = a * b;
+    else x = a / b;
+    nums.push(x);
+}
+
+int main() {
+
+    string str;
+    cin >> str;
+
+    for (int i = 0; i < str.size(); i++) {
+        auto c = str[i];
+        if (isdigit(c)) {
+            int x = 0, j = i;
+            while (j < str.size() && isdigit(str[j]))
+                x = x * 10 + str[j++] - '0';
+            i = j - 1;
+            nums.push(x);
+        } else if (c == '(') {
+            ops.push(c);
+        } else if (c == ')') {
+            while (ops.top() != '(') eval();
+            ops.pop(); // 弹出左括号
+        } else {
+            while (ops.size() && ops.top() != '(' && pr[ops.top()] >= pr[c]) eval();
+            ops.push(c);
+        }
+    }
+    while (ops.size()) eval();
+
+    cout << nums.top();
+
+    return 0;
+}
+ */
+
 #endif //ALGORITHM_TEMPLATE_OTHER_H
