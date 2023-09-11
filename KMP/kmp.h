@@ -33,7 +33,22 @@ int strStr(string s, string p) {
 }
 
 
-
+    // KMP 模板
+    vector<int> calc_max_match(string s) {
+        vector<int> match(s.length());
+        int c = 0;
+        for (int i = 1; i < s.length(); i++) {
+            char v = s[i];
+            while (c && s[c] != v) {
+                c = match[c - 1];
+            }
+            if (s[c] == v) {
+                c++;
+            }
+            match[i] = c;
+        }
+        return match;
+    }
 
     // KMP 模板
     // 返回 text 中出现了多少次 pattern（允许 pattern 重叠）
